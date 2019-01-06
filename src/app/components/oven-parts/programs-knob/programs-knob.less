@@ -1,0 +1,48 @@
+@import (reference) "../../../../shared/styles.less";
+
+.programs-knob {
+  position: relative;
+
+  .off {
+    font-size: 9px;
+    text-align: center;
+    top: 3;
+    right: 22;
+  }
+
+  .top-bottom-heating {
+    top: 16;
+    right: 0;
+    .background-image('top-bottom-heating')
+  }
+
+  .grill-and-fan {
+    bottom: 2;
+    right: 8;
+    .background-image('grill-and-fan')
+  }
+
+  .grill {
+    bottom: 2;
+    left: 8;
+    .background-image('grill')
+  }
+
+  .light {
+    top: 16;
+    left: 0;
+    .background-image('light')
+  }
+
+  .program {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    .centered-background(16px);
+    cursor: pointer;
+  }
+
+  .knob {
+    margin: 20px;
+  }
+}

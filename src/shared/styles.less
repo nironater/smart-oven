@@ -1,0 +1,23 @@
+@stainless-steel-color: #caccce;
+
+@oven-border-radius: 3px;
+
+.background-image(@resource) {
+    background-image: url("../images/@{resource}.png");
+}
+
+.centered-background(@size: true) {
+    background-position: center;
+    background-repeat: no-repeat;
+
+    & when not(@size = true) {
+        background-size: @size @size;
+    }
+}
+
+.user-select(@value) {
+    -webkit-user-select: @value; /* Safari 3.1+ */
+    -moz-user-select: @value; /* Firefox 2+ */
+    -ms-user-select: @value; /* IE 10+ */
+    user-select: @value; /* Standard syntax */
+}

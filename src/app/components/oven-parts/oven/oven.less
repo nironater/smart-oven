@@ -1,0 +1,119 @@
+@import (reference) "../../../../shared/styles.less";
+
+.oven {
+    position: relative;
+    width: 300px;
+    height: 350px;
+
+    .smart-panel {
+        height: 20%;
+    }
+
+    .door {
+        height: 80%;
+        padding: 0px 25px 10px;
+        border-top: 2px solid grey;
+        border-bottom-right-radius: @oven-border-radius;
+        border-bottom-left-radius: @oven-border-radius;
+        background-color: @stainless-steel-color;
+
+        .inner-area {
+            height: 100%;
+            display: flex;
+            flex-flow: column;
+            padding: 10px 15px 10px;
+            background-color: black;
+            border-bottom-right-radius: @oven-border-radius;
+            border-bottom-left-radius: @oven-border-radius;
+
+            .handle {
+                height: 10px;
+                background-color: @stainless-steel-color;
+            }
+
+            .transparent-glass {
+                position: relative;
+                flex: 1 1 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 20px 0px 10px;
+                border-radius: 3px;
+
+                &.top-heat-effect {
+                    background-image: linear-gradient(red, yellow, yellow);
+                }
+
+                &.top-bottom-heat-effect {
+                    background-image: linear-gradient(red, yellow, yellow, yellow, red);
+                }
+
+                &.center-heat-effect {
+                    background-image: radial-gradient(circle, red, yellow);
+                }
+
+                &.light-effect {
+                    background-image: linear-gradient(-135deg, yellow, orange, orange);
+                }
+
+                .transparent-screen {
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    opacity: 0.5;
+                    background-color: #222222;
+                }
+
+                .light-element {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    width: 32;
+                    height: 32px;
+                    transform: rotate(-135deg);
+                    .centered-background(32px);
+                    .background-image("light-element");
+                }
+
+                .grill-element {
+                    position: absolute;
+                    opacity: 0.7;
+                    top: 10px;
+                    width: 145px;
+                    height: 16px;
+                    .centered-background;
+                    .background-image("grill-element");
+                }
+
+                .heater-element {
+                    position: absolute;
+                    opacity: 0.7;
+                    width: 145px;
+                    height: 6px;
+                    border-radius: 3px;
+                    background-color: darkred;
+
+                    &.top {
+                        top: 10px;
+                    }
+
+                    &.bottom {
+                        bottom: 10px;
+                    }
+                }
+            }
+
+            .separator {
+                height: 2px;
+                background-color: @stainless-steel-color;
+            }
+
+            .logo {
+                text-align: center;
+                padding: 5px;
+                font-size: 16px;
+                color: @stainless-steel-color;
+            }
+        }
+    }
+}

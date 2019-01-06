@@ -1,0 +1,44 @@
+{
+  "name": "smart-oven",
+  "version": "1.0.0",
+  "description": "My personal project (Smart Oven) using Typescript + React + less + MobX",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nironater/smart-oven.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "mobx"
+  ],
+  "author": "Nir Tamir <nir.tamir12@gmail.com>",
+  "license": "Do What The F*ck You Want To Public License",
+  "homepage": "http://mobxjs.github.com/mobx",
+  "devDependencies": {
+    "@types/react": "16.7.18",
+    "@types/react-dom": "16.0.11",
+    "@types/webpack-env": "^1.13.6",
+    "awesome-typescript-loader": "^3.2.1",
+    "css-loader": "^0.28.4",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "style-loader": "^0.18.2",
+    "typescript": "^2.4.2",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.6.1"
+  },
+  "dependencies": {
+    "ajv": "^6.6.2",
+    "classnames": "^2.2.6",
+    "file-loader": "^2.0.0",
+    "json-server": "^0.14.0",
+    "mobx": "^3.2.1",
+    "mobx-react": "^4.2.2",
+    "mobx-react-devtools": "^4.2.15",
+    "react": "16.7.0",
+    "react-dom": "16.7.0"
+  }
+}
