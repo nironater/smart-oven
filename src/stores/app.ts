@@ -2,7 +2,7 @@ import { OvenState } from './../services/smart-oven-api';
 import { observable, action, computed } from 'mobx';
 
 import { IAppStore } from '../models/app-model';
-import { SmartOven, OvenProgram, OperationStatus } from '../services/smart-oven-api';
+import { SmartOven, OvenProgram } from '../services/smart-oven-api';
 
 class AppStore implements IAppStore {
 
@@ -33,12 +33,20 @@ class AppStore implements IAppStore {
         return this.ovenState.status;
     }
 
+    @computed get temperature() {
+        return this.ovenState.temp;
+    }
+
+    @computed get targetTemperature() {
+        return this.smartOven.getProgramTemperature(this.program);
+    }
+
     @computed get showFan() {
         return this.program === OvenProgram.HotAirGrill;
     }
 
     @computed get showLight() {
-        return this.program !== OvenProgram.Off;
+        return this.program == OvenProgram.Light;
     }
 
     @computed get showGrill() {

@@ -1,6 +1,10 @@
-export interface OvenState {
+export interface OvenInitialState {
     program: OvenProgram;
     status: OperationStatus;
+}
+
+export interface OvenState extends OvenInitialState {
+    temp: number;
 }
 
 export const enum OvenProgram {
@@ -16,53 +20,152 @@ export const enum OperationStatus {
     Ready
 }
 
-const DEFAULT_STATE: OvenState = {
-    program: OvenProgram.Off,
-    status: OperationStatus.Ready,
+export type ProgramsConfiguration = Map<OvenProgram, ProgramConfiguration>;
+
+export interface ProgramConfiguration {
+    temperature: number
 };
+
+interface OvenOptions {
+    initialState?: OvenInitialState;
+    programsConfiguration?: ProgramsConfiguration
+}
+
+const MILLISECONDS_PER_DAGREE: number = 10;
+const TEMPERATURE_RESOLUTION: number = 10;
 
 export class SmartOven {
 
     private _state: OvenState;
     private stateChangeCallback: (state: OvenState) => void;
-    private timeoutHandler;
+    private _programsConfiguration: ProgramsConfiguration;
+    private counter: Counter = new Counter();
 
-    init(onStateChange: (state: OvenState) => void, initialState: OvenState = DEFAULT_STATE): OvenState {
+    init(onStateChange: (state: OvenState) => void, ovenOptions: OvenOptions = {}): OvenState {
+        const { initialState = this.defaultOvenInitialState, programsConfiguration } = ovenOptions;
+
         this.stateChangeCallback = onStateChange;
-        return this._state = initialState;
+
+        this._programsConfiguration = this.defaultProgramsConfiguration;
+        if (programsConfiguration) {
+            // override default programs configuration to user's configuration
+            programsConfiguration.forEach((configuration, program) => this._programsConfiguration.set(program, configuration))
+        }
+
+        this._state = {...initialState, temp: this.getProgramTemperature(initialState.program)};
+
+        return { ...this._state };
     }
 
     setProgram = (newProgram: OvenProgram) => {
         if (newProgram === this._state.program)
             return;
 
-        if (this.timeoutHandler) {
-            clearTimeout(this.timeoutHandler); // last unfinished change is not relevant anymore
+        // any unfinished change is not relevant anymore if exists
+        this.counter.stop();
+
+        const transitionTime = this.calculateTransitionTime(newProgram);
+
+
+        if (transitionTime > 0) {
+            this.updateState({ program: newProgram, status: OperationStatus.AdjustingTemp });
+        } else {
+            this.updateState({ program: newProgram });
         }
 
-        console.log(`Program ${newProgram} Set!`);
-        this.setState(newProgram, OperationStatus.AdjustingTemp);
+        console.log(`Program ${newProgram} Set! Expected transition time: ${transitionTime} milliseconds`);
 
-        this.timeoutHandler = setTimeout(
+        const targetTemp = this.getProgramTemperature(this.state.program);
+        this.counter.start(
+            TEMPERATURE_RESOLUTION * MILLISECONDS_PER_DAGREE,
+            transitionTime,
             () => {
+                let newTemp: number;
+                if (this.state.temp < targetTemp) {
+                    newTemp = Math.min(targetTemp, this.state.temp + TEMPERATURE_RESOLUTION);
+                } else {
+                    newTemp = Math.max(targetTemp, this.state.temp - TEMPERATURE_RESOLUTION);
+                }
+                this.updateState({ temp: newTemp });
+                console.log(` ~ ${this.state.temp}C°`);
+            },
+            () => {
+                this.updateState({ status: OperationStatus.Ready, temp: targetTemp });
                 console.log(` -= ${newProgram} Ready =- `);
-                this.setState(this._state.program, OperationStatus.Ready);
             }
-            , 3000
-        );
+        )
     }
 
-    public get state(): OvenState {
+    get state(): OvenState {
         return { ...this._state };  // return copy of state for protection
     }
 
-    private setState = (program: OvenProgram, status: OperationStatus) => {
-        this._state = {
-            program: program,
-            status: status,
-        };
+    getProgramTemperature(program: OvenProgram) {
+        return this._programsConfiguration.get(program).temperature;
+    }
+
+    private updateState = (newState: Partial<OvenState>) => {
+        this._state = {...this._state, ...newState}
         if (this.stateChangeCallback) {
             this.stateChangeCallback({ ...this._state }); // return copy of state for protection
         }
+    }
+
+    private calculateTransitionTime(toProgram: OvenProgram): number {
+        const fromTemp = this.state.temp;
+        const toTemp = this.getProgramTemperature(toProgram);
+
+        return MILLISECONDS_PER_DAGREE * Math.abs(toTemp - fromTemp);
+    }
+
+    private get defaultProgramsConfiguration(): ProgramsConfiguration {
+        return new Map([
+            [OvenProgram.Off, { temperature: 0 }],
+            [OvenProgram.TopBottomHeating, { temperature: 180 }],
+            [OvenProgram.HotAirGrill, { temperature: 300 }],
+            [OvenProgram.Grill, { temperature: 250 }],
+            [OvenProgram.Light, { temperature: 0 }],
+        ]);
+    };
+
+    private get defaultOvenInitialState(): OvenInitialState {
+        return {
+            program: OvenProgram.Off,
+            status: OperationStatus.Ready,
+        };
+    }
+}
+
+class Counter {
+    private handler;
+    isStopped: boolean = false;
+
+    start(interval: number, totalTime: number, onInterval: () => void, onComplete: () => void) {
+        clearTimeout(this.handler);
+        this.isStopped = false;
+        const startTime = new Date().valueOf();
+        this.handler = setInterval(
+            () => {
+                if (this.isStopped) return;
+
+                const now = new Date().valueOf();
+                const elpasedTime = now - startTime;
+
+                if (elpasedTime >= totalTime) {
+                    this.stop();
+                    onComplete();
+                } else {
+                    onInterval();
+                }
+
+            },
+            interval
+        );
+
+    }
+
+    stop() {
+        this.isStopped = true;
+        clearTimeout(this.handler);
     }
 }

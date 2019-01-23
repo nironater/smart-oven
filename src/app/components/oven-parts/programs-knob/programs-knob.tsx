@@ -1,7 +1,6 @@
 import './programs-knob.less';
 
 import * as React from 'react';
-import { observer } from 'mobx-react';
 
 import { Knob } from '../knob/knob';
 import { OvenProgram } from '../../../../services/smart-oven-api';

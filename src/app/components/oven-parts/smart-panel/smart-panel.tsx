@@ -1,6 +1,7 @@
 import './smart-panel.less';
 
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { observer } from 'mobx-react';
 
 import { IAppStore } from '../../../../models/app-model';
@@ -12,19 +13,20 @@ import { TempKnob } from '../temp-knob/temp-knob';
 
 type SmartPanelProps = {
     appStore: IAppStore;
+    className?: string;
 }
 
 @observer
 export class SmartPanel extends React.Component<SmartPanelProps> {
 
     render() {
-        const { appStore } = this.props;
+        const { appStore, className } = this.props;
 
         return (
-            <div className="smart-panel">
-                <ProgramsKnob selectedProgram={appStore.program} onProgramClick={appStore.changeProgram}/>
+            <div className={classnames("smart-panel", className)}>
+                <ProgramsKnob selectedProgram={appStore.program} onProgramClick={appStore.changeProgram} />
                 <InfoScreen appStore={appStore} />
-                <TempKnob />
+                <TempKnob temperture={appStore.targetTemperature} />
             </div>
         );
     }
