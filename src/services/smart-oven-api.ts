@@ -43,7 +43,7 @@ export class SmartOven {
     private _programsConfiguration: ProgramsConfiguration;
     private counter: Counter;
 
-    init(onStateChange: (state: OvenState) => void, ovenOptions: OvenOptions = {}): OvenState {
+    init(onStateChange: (state: OvenState) => void, ovenOptions: OvenOptions = {}) {
         const {
             programsConfiguration,
             initialState = this.defaultOvenInitialState,
@@ -62,9 +62,7 @@ export class SmartOven {
             programsConfiguration.forEach((configuration, program) => this._programsConfiguration.set(program, configuration))
         }
 
-        this._state = { ...initialState, temp: this.getProgramTemperature(initialState.program) };
-
-        return { ...this._state };
+        this.updateState({ ...initialState, temp: this.getProgramTemperature(initialState.program) });
     }
 
     setProgram = (newProgram: OvenProgram) => {
@@ -148,7 +146,7 @@ export class SmartOven {
 
 class Counter {
     private handler;
-    isStopped: boolean = false;
+    isStopped: boolean = true;
 
     start(interval: number, totalTime: number, onInterval: () => void, onComplete: () => void) {
         clearInterval(this.handler);

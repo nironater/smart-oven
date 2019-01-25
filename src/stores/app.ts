@@ -27,10 +27,10 @@ class AppStore implements IAppStore {
 
     @action
     handleGetOvenOptions = (ovenOptions: OvenOptions) => {
-        const newOven = new SmartOven();
-        const firstOvenState = newOven.init(this.setOvenState, ovenOptions);
-        this.setSmartOven(newOven);
-        this.setOvenState(firstOvenState);
+        if (!this.smartOven) {
+            this.setSmartOven(new SmartOven());
+        }
+        this.smartOven.init(this.setOvenState, ovenOptions);
         this.setIsLoading(false);
     }
 

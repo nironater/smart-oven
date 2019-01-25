@@ -5,7 +5,7 @@ export function getResource<T>(resource: string): Promise<T> {
   return res;
 };
 
-export function setResource(resource: string): Promise<any> {
+export function putResource(resource: string): Promise<any> {
   const res = makeRequest(resource, 'PUT');
   return res;
 };
