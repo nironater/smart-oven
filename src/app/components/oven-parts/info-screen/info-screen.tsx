@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { IAppStore } from '../../../../models/app-model';
 import { OperationStatus } from '../../../../services/smart-oven-api';
 
-type InfoScreenProps = {
+interface InfoScreenProps {
     appStore: IAppStore;
 }
 

@@ -17,7 +17,6 @@ export const makeRequest = (resource: string, method: 'GET' | 'POST' | 'PUT' | '
     })
     .then(data => {
       // Work with JSON data here
-      console.log(`response: ${data}`);
       return data;
     })
     .catch(err => {

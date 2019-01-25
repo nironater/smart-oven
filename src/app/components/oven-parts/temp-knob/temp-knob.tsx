@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { Knob } from '../knob/knob';
 
-type TempKnobProps = {
+interface TempKnobProps {
     temperture?: number;
 }
 

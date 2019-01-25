@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import './knob.less';
 
 
-type KnobProps = {
+interface KnobProps {
   numberOfDials: number;
   pointerLocation: number;
 }

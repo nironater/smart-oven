@@ -11,7 +11,7 @@ import { ProgramsKnob } from '../programs-knob/programs-knob';
 import { TempKnob } from '../temp-knob/temp-knob';
 
 
-type SmartPanelProps = {
+interface SmartPanelProps {
     appStore: IAppStore;
     className?: string;
 }

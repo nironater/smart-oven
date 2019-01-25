@@ -3,7 +3,7 @@ import * as classnames from 'classnames';
 
 import './fan.less';
 
-type FanProps = {
+interface FanProps {
   isOn: boolean;
 }
 

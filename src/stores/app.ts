@@ -1,19 +1,37 @@
-import { OvenState } from './../services/smart-oven-api';
 import { observable, action, computed } from 'mobx';
 
-import { IAppStore } from '../models/app-model';
-import { SmartOven, OvenProgram } from '../services/smart-oven-api';
+import { IAppStore, OvenConfigurationName } from '../models/app-model';
+import { SmartOven, OvenProgram, OvenState, OvenOptions } from './../services/smart-oven-api';
+import { getOvenOptions } from '../services/online-oven-configuration-service';
 
 class AppStore implements IAppStore {
 
+    @observable
     private smartOven: SmartOven;
 
     @observable
     private _ovenState: OvenState;
 
-    init() {
-        this.smartOven = new SmartOven();
-        this.setOvenState(this.smartOven.init(this.setOvenState));
+    @observable
+    private _isLoading: boolean = true;
+
+    init(ovenConfigurationName: OvenConfigurationName = "slow") {
+        this.setIsLoading(true);
+        return getOvenOptions(ovenConfigurationName)
+            .then(this.handleGetOvenOptions)
+            .catch(error => {
+                this.setIsLoading(false);
+                window.alert(`Opps... i couldn't find oven configuration`);
+            });
+    }
+
+    @action
+    handleGetOvenOptions = (ovenOptions: OvenOptions) => {
+        const newOven = new SmartOven();
+        const firstOvenState = newOven.init(this.setOvenState, ovenOptions);
+        this.setSmartOven(newOven);
+        this.setOvenState(firstOvenState);
+        this.setIsLoading(false);
     }
 
     get ovenState(): OvenState {
@@ -23,6 +41,20 @@ class AppStore implements IAppStore {
     @action
     private setOvenState = (value: OvenState) => {
         this._ovenState = value;
+    };
+
+    get isLoading(): boolean {
+        return this._isLoading;
+    }
+
+    @action
+    private setIsLoading = (value: boolean) => {
+        this._isLoading = value;
+    };
+
+    @action
+    private setSmartOven = (value: SmartOven) => {
+        this.smartOven = value;
     };
 
     @computed get program() {

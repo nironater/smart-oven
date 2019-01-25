@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Knob } from '../knob/knob';
 import { OvenProgram } from '../../../../services/smart-oven-api';
 
-type ProgramsKnobProps = {
+interface ProgramsKnobProps {
     selectedProgram: OvenProgram;
     onProgramClick: (program: OvenProgram) => void
 }

@@ -8,7 +8,7 @@ import { IAppStore } from '../../../../models/app-model';
 import { SmartPanel } from '../smart-panel/smart-panel';
 import { Door } from '../door/door';
 
-type OvenProps = {
+interface OvenProps {
     appStore: IAppStore;
 }
 
@@ -21,7 +21,7 @@ export class Oven extends React.Component<OvenProps> {
         return (
             <div className="oven">
                 <div className="inner-wrapper">
-                    <SmartPanel appStore={appStore} className="oven-smart-panel"/>
+                    <SmartPanel appStore={appStore} className="oven-smart-panel" />
                     <Door appStore={appStore} className="oven-door" />
                 </div>
             </div>

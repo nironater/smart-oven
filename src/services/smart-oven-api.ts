@@ -26,25 +26,35 @@ export interface ProgramConfiguration {
     temperature: number
 };
 
-interface OvenOptions {
+export interface OvenOptions {
     initialState?: OvenInitialState;
+    millisecsPerDagree?: number;
     programsConfiguration?: ProgramsConfiguration
 }
 
-const MILLISECONDS_PER_DAGREE: number = 10;
+const DEFAULT_MILLISECONDS_PER_DAGREE: number = 10;
 const TEMPERATURE_RESOLUTION: number = 10;
 
 export class SmartOven {
 
     private _state: OvenState;
     private stateChangeCallback: (state: OvenState) => void;
+    private _millisecsPerDagree: number;
     private _programsConfiguration: ProgramsConfiguration;
-    private counter: Counter = new Counter();
+    private counter: Counter;
 
     init(onStateChange: (state: OvenState) => void, ovenOptions: OvenOptions = {}): OvenState {
-        const { initialState = this.defaultOvenInitialState, programsConfiguration } = ovenOptions;
+        const {
+            programsConfiguration,
+            initialState = this.defaultOvenInitialState,
+            millisecsPerDagree = DEFAULT_MILLISECONDS_PER_DAGREE,
+        } = ovenOptions;
+
+        if (this.counter) this.counter.stop();
+        this.counter = new Counter();
 
         this.stateChangeCallback = onStateChange;
+        this._millisecsPerDagree = millisecsPerDagree;
 
         this._programsConfiguration = this.defaultProgramsConfiguration;
         if (programsConfiguration) {
@@ -52,7 +62,7 @@ export class SmartOven {
             programsConfiguration.forEach((configuration, program) => this._programsConfiguration.set(program, configuration))
         }
 
-        this._state = {...initialState, temp: this.getProgramTemperature(initialState.program)};
+        this._state = { ...initialState, temp: this.getProgramTemperature(initialState.program) };
 
         return { ...this._state };
     }
@@ -77,7 +87,7 @@ export class SmartOven {
 
         const targetTemp = this.getProgramTemperature(this.state.program);
         this.counter.start(
-            TEMPERATURE_RESOLUTION * MILLISECONDS_PER_DAGREE,
+            TEMPERATURE_RESOLUTION * this._millisecsPerDagree,
             transitionTime,
             () => {
                 let newTemp: number;
@@ -105,7 +115,7 @@ export class SmartOven {
     }
 
     private updateState = (newState: Partial<OvenState>) => {
-        this._state = {...this._state, ...newState}
+        this._state = { ...this._state, ...newState }
         if (this.stateChangeCallback) {
             this.stateChangeCallback({ ...this._state }); // return copy of state for protection
         }
@@ -115,7 +125,7 @@ export class SmartOven {
         const fromTemp = this.state.temp;
         const toTemp = this.getProgramTemperature(toProgram);
 
-        return MILLISECONDS_PER_DAGREE * Math.abs(toTemp - fromTemp);
+        return this._millisecsPerDagree * Math.abs(toTemp - fromTemp);
     }
 
     private get defaultProgramsConfiguration(): ProgramsConfiguration {
@@ -141,7 +151,7 @@ class Counter {
     isStopped: boolean = false;
 
     start(interval: number, totalTime: number, onInterval: () => void, onComplete: () => void) {
-        clearTimeout(this.handler);
+        clearInterval(this.handler);
         this.isStopped = false;
         const startTime = new Date().valueOf();
         this.handler = setInterval(
@@ -166,6 +176,6 @@ class Counter {
 
     stop() {
         this.isStopped = true;
-        clearTimeout(this.handler);
+        clearInterval(this.handler);
     }
 }

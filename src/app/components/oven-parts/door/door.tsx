@@ -8,7 +8,7 @@ import { IAppStore } from '../../../../models/app-model';
 import { OvenProgram } from '../../../../services/smart-oven-api';
 import { Fan } from '../fan/fan';
 
-type DoorProps = {
+interface DoorProps {
     appStore: IAppStore;
     className?: string;
 }
