@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 
-import { IAppStore, OvenConfigurationName } from '../models/app-model';
+import { IAppStore } from '../models/app-model';
+import { OvenConfigurationName } from '../models/online-oven-configuration-model';
 import { SmartOven, OvenProgram, OvenState, OvenOptions } from './../services/smart-oven-api';
 import { getOvenOptions } from '../services/online-oven-configuration-service';
 

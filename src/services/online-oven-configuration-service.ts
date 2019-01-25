@@ -1,4 +1,4 @@
-import { OvenConfigurationName, OnlineOvenConfiguration, OnlineProgramData } from "../models/app-model";
+import { OvenConfigurationName, OnlineOvenConfiguration, OnlineProgramData } from "../models/online-oven-configuration-model";
 import { OvenOptions, ProgramsConfiguration, ProgramConfiguration, OvenProgram } from "./smart-oven-api";
 import { getResource } from "./http-service";
 

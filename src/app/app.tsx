@@ -12,7 +12,7 @@ interface AppProps {
 }
 
 @observer
-export class App extends React.Component<AppProps, { localArr: any[] }> {
+export class App extends React.Component<AppProps> {
     componentDidMount() {
         this.props.appStore.init();
     }
@@ -36,9 +36,9 @@ export class App extends React.Component<AppProps, { localArr: any[] }> {
 
         return (
             <>
-                <div style={{display: 'flex'}}>
-                    <button style={{margin: '10px'}} onClick={() => appStore.init("fast")}>Fast</button>
-                    <button style={{margin: '10px'}} onClick={() => appStore.init("slow")}>Slow</button>
+                <div className="configuration-buttons">
+                    <button onClick={() => appStore.init("fast")}>Fast</button>
+                    <button onClick={() => appStore.init("slow")}>Slow</button>
                 </div>
                 <Oven appStore={appStore} />
                 <div className="credits">

@@ -10,8 +10,8 @@ export interface OvenState extends OvenInitialState {
 export const enum OvenProgram {
     Off,
     TopBottomHeating,
-    HotAirGrill,
     Grill,
+    HotAirGrill,
     Light
 }
 

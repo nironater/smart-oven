@@ -1,19 +1,66 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+    "ovenConfigurations": [
+        {
+            "name": "fast",
+            "milisecsPerDagree": 15,
+            "programs": [
+                {
+                    "id": 0,
+                    "name": "Off",
+                    "settings": { "temperature": 25 }
+                },
+                {
+                    "id": 4,
+                    "name": "Light",
+                    "settings": { "temperature": 30 }
+                },
+                {
+                    "id": 1,
+                    "name": "Top Bottom Heating",
+                    "settings": { "temperature": 180 }
+                },
+                {
+                    "id": 2,
+                    "name": "Grill",
+                    "settings": { "temperature": 250 }
+                },
+                {
+                    "id": 3,
+                    "name": "Hot Air Grill",
+                    "settings": { "temperature": 300 }
+                }
+            ]
+        },
+        {
+            "name": "slow",
+            "milisecsPerDagree": 30,
+            "programs": [
+                {
+                    "id": 0,
+                    "name": "Off",
+                    "settings": { "temperature": 0 }
+                },
+                {
+                    "id": 4,
+                    "name": "Light",
+                    "settings": { "temperature": 0 }
+                },
+                {
+                    "id": 1,
+                    "name": "Top Bottom Heating",
+                    "settings": { "temperature": 180 }
+                },
+                {
+                    "id": 2,
+                    "name": "Grill",
+                    "settings": { "temperature": 250 }
+                },
+                {
+                    "id": 3,
+                    "name": "Hot Air Grill",
+                    "settings": { "temperature": 300 }
+                }
+            ]
+        }
+    ]
 }
