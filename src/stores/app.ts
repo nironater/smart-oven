@@ -19,20 +19,23 @@ class AppStore implements IAppStore {
     init(ovenConfigurationName: OvenConfigurationName = "slow") {
         this.setIsLoading(true);
         return getOvenOptions(ovenConfigurationName)
-            .then(this.handleGetOvenOptions)
-            .catch(error => {
-                this.setIsLoading(false);
-                window.alert(`Opps... i couldn't find oven configuration`);
-            });
+            .then(this.initSmartOven)
+            .catch(this.handleGetOvenOptionsError);
     }
 
     @action
-    handleGetOvenOptions = (ovenOptions: OvenOptions) => {
+    initSmartOven = (ovenOptions?: OvenOptions) => {
         if (!this.smartOven) {
             this.setSmartOven(new SmartOven());
         }
         this.smartOven.init(this.setOvenState, ovenOptions);
         this.setIsLoading(false);
+    }
+
+    @action
+    handleGetOvenOptionsError = (error) => {
+        window.alert(`Opps... i couldn't find oven configuration. Falling back to default configuration`);
+        this.initSmartOven();
     }
 
     get ovenState(): OvenState {
