@@ -2,7 +2,7 @@ export type OvenConfigurationName = "fast" | "slow";
 
 export interface OnlineOvenConfiguration {
     name: string;
-    milisecsPerDagree: number;
+    milisecsPerDegree: number;
     programs: OnlineProgramData[];
 }
 

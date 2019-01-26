@@ -2,7 +2,7 @@
     "ovenConfigurations": [
         {
             "name": "fast",
-            "milisecsPerDagree": 15,
+            "milisecsPerDegree": 15,
             "programs": [
                 {
                     "id": 0,
@@ -33,7 +33,7 @@
         },
         {
             "name": "slow",
-            "milisecsPerDagree": 30,
+            "milisecsPerDegree": 30,
             "programs": [
                 {
                     "id": 0,

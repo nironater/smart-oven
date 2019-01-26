@@ -28,18 +28,18 @@ export interface ProgramConfiguration {
 
 export interface OvenOptions {
     initialState?: OvenInitialState;
-    millisecsPerDagree?: number;
+    millisecsPerDegree?: number;
     programsConfiguration?: ProgramsConfiguration
 }
 
-const DEFAULT_MILLISECONDS_PER_DAGREE: number = 10;
+const DEFAULT_MILLISECONDS_PER_DEGREE: number = 10;
 const TEMPERATURE_RESOLUTION: number = 10;
 
 export class SmartOven {
 
     private _state: OvenState;
     private stateChangeCallback: (state: OvenState) => void;
-    private _millisecsPerDagree: number;
+    private _millisecsPerDegree: number;
     private _programsConfiguration: ProgramsConfiguration;
     private counter: Counter;
 
@@ -47,14 +47,14 @@ export class SmartOven {
         const {
             programsConfiguration,
             initialState = this.defaultOvenInitialState,
-            millisecsPerDagree = DEFAULT_MILLISECONDS_PER_DAGREE,
+            millisecsPerDegree: millisecsPerDegree = DEFAULT_MILLISECONDS_PER_DEGREE,
         } = ovenOptions;
 
         if (this.counter) this.counter.stop();
         this.counter = new Counter();
 
         this.stateChangeCallback = onStateChange;
-        this._millisecsPerDagree = millisecsPerDagree;
+        this._millisecsPerDegree = millisecsPerDegree;
 
         this._programsConfiguration = this.defaultProgramsConfiguration;
         if (programsConfiguration) {
@@ -85,7 +85,7 @@ export class SmartOven {
 
         const targetTemp = this.getProgramTemperature(this.state.program);
         this.counter.start(
-            TEMPERATURE_RESOLUTION * this._millisecsPerDagree,
+            TEMPERATURE_RESOLUTION * this._millisecsPerDegree,
             transitionTime,
             () => {
                 let newTemp: number;
@@ -123,7 +123,7 @@ export class SmartOven {
         const fromTemp = this.state.temp;
         const toTemp = this.getProgramTemperature(toProgram);
 
-        return this._millisecsPerDagree * Math.abs(toTemp - fromTemp);
+        return this._millisecsPerDegree * Math.abs(toTemp - fromTemp);
     }
 
     private get defaultProgramsConfiguration(): ProgramsConfiguration {

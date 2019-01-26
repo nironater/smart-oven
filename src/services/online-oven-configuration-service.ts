@@ -12,7 +12,7 @@ const handleGetOvenConfigurations = (onlineOvenConfigurations: OnlineOvenConfigu
     const programsConfiguration = extractProgramsConfigurationFromOnlineOvenConfiguration(onlineOvenConfiguration);
     const ovenOptions: OvenOptions = {
         programsConfiguration,
-        millisecsPerDagree: onlineOvenConfiguration.milisecsPerDagree
+        millisecsPerDegree: onlineOvenConfiguration.milisecsPerDegree
     };
     return ovenOptions;
 }

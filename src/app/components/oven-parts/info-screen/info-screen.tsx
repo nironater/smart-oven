@@ -20,7 +20,7 @@ export class InfoScreen extends React.Component<InfoScreenProps> {
             <div className="info-screen">
                 <div className="text">
                     {appStore.operationStatus == OperationStatus.AdjustingTemp ?
-                        `~${appStore.temperature}C°`
+                        `${appStore.temperature}C°`
                         : 'Ready'
                     }
                 </div>
