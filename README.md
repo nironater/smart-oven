@@ -10,5 +10,8 @@ Initial run:
 * `json-server --watch db.json --port 3001` In another command line
 
 Screenshot:
+<div style="display:flex">
+  <img src="src/images/SmartOvenScreenshot1.PNG" width="40%">
+  <img src="src/images/SmartOvenScreenshot2.PNG" width="40%" >
+</div>
 
-![](src/images/SmartOvenScreenshot1.PNG)
