@@ -6,4 +6,5 @@ Initial run:
 
 * Install Node.js
 * `npm install`
-* `npm start`
+* `npm start` In one command line
+* `json-server --watch db.json --port 3001` In another command line
