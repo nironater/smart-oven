@@ -8,7 +8,7 @@ Initial run:
 * `npm install`
 * `npm start` In one command line
 * `json-server --watch db.json --port 3001` In another command line
-* Open your browser at http://http://localhost:3000/
+* Open your browser at http://localhost:3000/
 * Enjoy!
 
 Screenshots:
